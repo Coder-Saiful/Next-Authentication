@@ -1,5 +1,13 @@
 import React from 'react';
 
+export async function generateMetadata({ params }) {
+    const res = await fetch (`https://jsonplaceholder.typicode.com/users/${params.id}`, {cache: 'no-store'});
+    const data = await res.json();
+    return {
+        title: data.name
+    }
+  }
+
 const UserDetails = async ({params}) => {
     const res = await fetch (`https://jsonplaceholder.typicode.com/users/${params.id}`, {cache: 'no-store'});
     const data = await res.json();
