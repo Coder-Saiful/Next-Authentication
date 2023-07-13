@@ -9,4 +9,10 @@
   .nav-link.active {
     @apply bg-green-400 text-black;
   }
+  .auth-input {
+    @apply bg-[#37373E] px-3 py-2 rounded-sm focus:outline-none focus:ring-1 ring-green-400 w-full text-white
+  }
+  .auth-input-label {
+    @apply text-white mb-1
+  }
 }

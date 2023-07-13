@@ -14,7 +14,7 @@ const UserDetails = async ({params}) => {
     return (
         <section className='container grid grid-cols-1 sm:grid-cols-2 gap-5'>
             <div>
-                <i class="fa-regular fa-circle-user text-[200px] text-gray-500 block"></i>
+                <i className="fa-regular fa-circle-user text-[200px] text-gray-500 block"></i>
                 <h2 className='text-[35px] font-bold mt-3'>{data.name}</h2>
                 <h3 className='text-gray-900 text-[25px] font-medium'>{data.email}</h3>
                 <h3 className='text-gray-700 text-[20px] font-medium'>{data.username}</h3>

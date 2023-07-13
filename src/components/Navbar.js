@@ -1,10 +1,15 @@
 'use client'
 
 import Link from "next/link";
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import {signOut, useSession} from 'next-auth/react'
+import { deleteCookie } from 'cookies-next';
 
 const Navbar = () => {
     const pathname = usePathname();
+    const router = useRouter();
+    const {data: session} = useSession();
+    console.log({session})
     return (
         <nav className="bg-gray-700 mb-5">
             <div className="container grid grid-cols-5 items-center">
@@ -17,7 +22,12 @@ const Navbar = () => {
                             <Link className={`nav-link ${pathname == '/' ? 'active' : ''}`} href='/'>Home</Link>
                             <Link className={`nav-link ${pathname == '/admin' ? 'active' : ''}`} href='/admin'>Admin</Link>
                             <Link className={`nav-link ${pathname == '/dashboard' ? 'active' : ''}`} href='/dashboard'>Dashboard</Link>
-                            <button className='nav-link'>Login</button>
+                            {session ? <button className='nav-link' onClick={() => {
+                                signOut({redirect: false}).then(() => router.push('/'));
+                            }}>Logout</button> : <Link className='nav-link' href='/auth/signin'>Login</Link>}
+                        </li>
+                        <li className="text-white">
+                            {session?.user.name}
                         </li>
                     </ul>
                 </div>
