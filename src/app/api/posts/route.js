@@ -52,7 +52,7 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-    if (authorize(req)) {
+    // if (authorize(req)) {
         try {
             const posts = await prisma.post.findMany({
                 orderBy: {
@@ -69,13 +69,14 @@ export async function GET(req) {
                 status: 400
             });
         }
-    } else {
-        return NextResponse.json({
-            error: {
-                message: "Unauthorized"
-            }
-        }, {
-            status: 401
-        });
-    }
+    // }
+    //  else {
+        // return NextResponse.json({
+        //     error: {
+        //         message: "Unauthorized"
+        //     }
+        // }, {
+        //     status: 401
+        // });
+    // }
 }

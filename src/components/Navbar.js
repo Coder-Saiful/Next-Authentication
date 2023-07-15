@@ -9,7 +9,7 @@ const Navbar = () => {
     const pathname = usePathname();
     const router = useRouter();
     const {data: session} = useSession();
-    console.log({session})
+    // console.log({session})
     return (
         <nav className="bg-gray-700 mb-5">
             <div className="container grid grid-cols-5 items-center">
