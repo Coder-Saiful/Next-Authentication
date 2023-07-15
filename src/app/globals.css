@@ -15,4 +15,7 @@
   .auth-input-label {
     @apply text-white mb-1
   }
+  .auth-input-error {
+    @apply ring-1 ring-red-400 focus:ring-red-400
+  }
 }

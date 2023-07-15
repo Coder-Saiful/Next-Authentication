@@ -9,9 +9,6 @@ import toast, { Toaster } from 'react-hot-toast';
 const LoginPage = () => {
     const [inval_info, setInvalInfo] = useState(false);
     const router = useRouter();
-    const searchParams = useSearchParams().get('callbackUrl');
-    const url = searchParams ? searchParams : 'http://localhost:3000';
-    const redirect = new URL(url).pathname;
     const [valErr, setValErr] = useState({});
     const [inputValue, setInputValue] = useState({
         email: '',
@@ -46,6 +43,8 @@ const LoginPage = () => {
                     setValErr({});
                     setInvalInfo(JSON.parse(result.error))
                 } else if (err.message) {
+                    setValErr({});
+                    setInvalInfo(false);
                     toast.error(`${JSON.parse(result.error).message}`);
                 } else if (err.validationError) {
                     setValErr(JSON.parse(result.error).validationError);
@@ -75,7 +74,7 @@ const LoginPage = () => {
             <form className='w-full' onSubmit={onSubmit}>
                 <div className='w-full mb-3'>
                     <label className='auth-input-label'>Email:</label>
-                    <input type='text' autoComplete='off' placeholder='Enter your email' className={`auth-input ${valErr.email ? 'ring-1 ring-red-400 focus:ring-red-400': ''}`} value={inputValue.email} onChange={handleChange} name='email' />
+                    <input type='text' autoComplete='off' placeholder='Enter your email' className={`auth-input ${valErr.email ? 'auth-input-error': ''}`} value={inputValue.email} onChange={handleChange} name='email' />
                     {inval_info && <p className='text-red-400 relative top-[5px]'>{inval_info.in_val_pass}</p>}
                     {valErr && valErr.email && <p className='text-red-400 relative top-[5px]'>{valErr.email}</p>}
                 </div>
@@ -84,7 +83,7 @@ const LoginPage = () => {
                         <label className='auth-input-label'>Password:</label>
                         <Link href='/auth/forgot-password' className='text-white text-[14px] hover:underline'>Forgot Password</Link>
                     </div>
-                    <input type='password' autoComplete='off' name='password' value={inputValue.password} onChange={handleChange} placeholder='Enter your password' className={`auth-input ${valErr.email ? 'ring-1 ring-red-400 focus:ring-red-400': ''}`}/>
+                    <input type='password' autoComplete='off' name='password' value={inputValue.password} onChange={handleChange} placeholder='Enter your password' className={`auth-input ${valErr.password ? 'auth-input-error ': ''}`}/>
                     {valErr && valErr.password && <p className='text-red-400 relative top-[5px]'>{valErr.password}</p>}
                 </div>
                 <div className='mb-3'>

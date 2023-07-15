@@ -15,6 +15,8 @@ const RegisterPage = () => {
     const {name, email, password} = inputValue;
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const [valErr, setValErr] = useState({});
+    const [emailExist,setEmailExist] = useState(false);
 
     const handleChange = e => {
         setInputValue((preVal) => {
@@ -37,9 +39,18 @@ const RegisterPage = () => {
                 type: 'register'
             });
             setLoading(false);
-            console.log({result})
             if (result.error) {
-                
+                const err = JSON.parse(result.error);
+                if (err.validationError) {
+                    setValErr(err.validationError);
+                } else if (err.exist_email) {
+                    setValErr({});
+                    setEmailExist(err.exist_email);
+                } else if (err.message) {
+                    setValErr({});
+                    setEmailExist(false);
+                    toast.error(err.message);
+                }
             } else {
                 setInputValue({
                     name: "",
@@ -49,6 +60,8 @@ const RegisterPage = () => {
                 router.push('/');
             }
         } catch (error) {
+            setValErr({});
+            setEmailExist(false);
             setLoading(false);
         }
     }
@@ -63,17 +76,21 @@ const RegisterPage = () => {
             <form className='w-full' onSubmit={handleSubmit}>
             <div className='w-full mb-3'>
                     <label className='auth-input-label'>Name:</label>
-                    <input type='text' placeholder='Enter your name' className='auth-input' name='name' value={name} onChange={handleChange}/>
+                    <input type='text' placeholder='Enter your name' className={`auth-input ${valErr.name ? 'auth-input-error' : ''}`} name='name' value={name} onChange={handleChange}/>
+                    {valErr.name && <p className='text-red-400 relative top-[5px]'>{valErr.name}</p>}
                 </div>
                 <div className='w-full mb-3'>
                     <label className='auth-input-label'>Email:</label>
-                    <input type='text' placeholder='Enter your email' className='auth-input' name='email' value={email} onChange={handleChange}/>
+                    <input type='text' placeholder='Enter your email' className={`auth-input ${valErr.email ? 'auth-input-error' : ''}`} name='email' value={email} onChange={handleChange}/>
+                    {emailExist && <p className='text-red-400 relative top-[5px]'>{emailExist}</p>}
+                    {valErr.email && <p className='text-red-400 relative top-[5px]'>{valErr.email}</p>}
                 </div>
                 <div className='w-full mb-3'>
                     <div className='flex justify-between'>
                         <label className='auth-input-label'>Password:</label>
                     </div>
-                    <input type='text' placeholder='Enter your password' className='auth-input' name='password' value={password} onChange={handleChange}/>
+                    <input type='text' placeholder='Enter your password' className={`auth-input ${valErr.password ? 'auth-input-error' : ''}`} name='password' value={password} onChange={handleChange}/>
+                    {valErr.password && <p className='text-red-400 relative top-[5px]'>{valErr.password}</p>}
                 </div>
                 <div>
                     <button className='bg-green-400 text-[17px] p-2 w-full mb-4 rounded-sm text-gray-900' disabled={loading}>{loading ? 'Creating Account...': 'Create Account'}</button>
